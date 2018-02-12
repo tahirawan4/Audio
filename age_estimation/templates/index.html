@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.8/howler.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+
+        $(function () {
+
+            var arr = new Array();
+            var count = 0;
+
+            var howler_example = new Howl({
+                //src: ['/Users/daniyalsyed/Desktop/test_audio.mp3'],
+                src: ["{% static "audio/testaudio.mp3" %}"],
+                {#                volume: 0.5#}
+            });
+
+            $("#howler-play").on("click", function () {
+                howler_example.play();
+            });
+
+            $("#howler-pause").on("click", function () {
+                howler_example.pause();
+            });
+
+            $("#howler-stop").on("click", function () {
+                howler_example.stop();
+            });
+
+            $("#howler-volup").on("click", function () {
+
+
+                var vol = howler_example.volume();
+                vol += 0.1;
+                if (vol > 1) {
+                    vol = 1;
+                }
+                howler_example.volume(vol);
+            });
+
+            $("#howler-voldown").on("click", function () {
+                var vol = howler_example.volume();
+                vol -= 0.1;
+                if (vol < 0) {
+                    vol = 0;
+                }
+                howler_example.volume(vol);
+            });
+
+
+            $("#howler-log_time").on("click", function () {
+
+                console.log(howler_example.seek());
+                arr.push(howler_example.seek());
+
+            });
+
+            $("#model_btn").on("click", function () {
+                $("#model_btn").blur();
+                howler_example.play();
+            });
+
+            $("#howler-send_time").on("click", function () {
+
+
+            });
+
+
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    count = count + 1;
+                    $('p').text('Press enter when sound comes in.');
+                    console.log(howler_example.seek());
+                    if (arr.length >= 2) {
+                        arr.pop();
+                    }
+                    arr.push(howler_example.seek());
+                    if (count == 2) {
+                        console.log(arr);
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'submit_time' %}",
+                            data: {
+                                'data': arr
+                            },
+                            success: function (html) {
+                                data = html.split(',');
+                                alert(data);
+
+                                $('#id_frequency').val(data[0]);
+                                $('#id_age').val(data[1]);
+
+                                $("#id_age").prop("readonly", true);
+                                $("#id_frequency").prop("readonly", true);
+
+
+                                $('#user_form').append('<input type="hidden" name="validation" value="valid" />');
+                                $('#close_button').click();
+                                arr = new Array();
+                                count = 0;
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+        });
+
+
+    </script>
+</head>
+<body>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" id='modal'>
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Age Verifier</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please press enter when sound goes off</p>
+            </div>
+            <div class="modal-footer">
+                <button id='close_button' type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <button type="button" id='model_btn' class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+                Verify Your
+                Age
+            </button>
+            <form id='user_form' method="post">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                {# Include the visible fields #}
+                {% for field in form.visible_fields %}
+                    <div class="fieldWrapper">
+                        {{ field.errors }}
+                        {{ field.label_tag }} {{ field }}
+                    </div>
+                {% endfor %}
+                <br/>
+                <input type="submit" class="btn btn-success" value="Submit"/>
+            </form>
+
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>
+
+</body>
+</html>
