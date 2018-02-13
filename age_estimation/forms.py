@@ -12,7 +12,7 @@ class UserSignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2', 'gender', 'age', 'country',
-                  'frequency']
+                  'frequency1', 'frequency2', 'average']
 
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -23,7 +23,9 @@ class UserSignUpForm(UserCreationForm):
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
     age = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     country = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    frequency = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    frequency1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    frequency2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    average = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):
         super(UserSignUpForm, self).__init__(*args, **kwargs)

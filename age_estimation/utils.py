@@ -5,8 +5,9 @@ from Audio.settings import PROJECT_ROOT
 from age_estimation.models import UserInfo
 
 
-def save_user_info(user, age, frequency, country):
-    UserInfo.objects.create(user=user, age=age, country=country, frequency=frequency)
+def save_user_info(user, age, frequency, frequency2, average, country):
+    UserInfo.objects.create(user=user, age=age, country=country, frequency=frequency, frequency2=frequency2,
+                            average=average)
 
 
 def estimate_age(aver_freq):

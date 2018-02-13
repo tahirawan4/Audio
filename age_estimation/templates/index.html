@@ -13,16 +13,23 @@
 
     <script>
 
+        function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
         $(function () {
 
             var arr = new Array();
             var count = 0;
 
             var howler_example = new Howl({
-                //src: ['/Users/daniyalsyed/Desktop/test_audio.mp3'],
-                src: ["{% static "audio/testaudio.mp3" %}"],
-                {#                volume: 0.5#}
+                src: ["{% static "audio/first_sound.mp3" %}"],
             });
+
+            var howler_example2 = new Howl({
+                src: ["{% static "audio/second_sound.mp3" %}"],
+            });
+
 
             $("#howler-play").on("click", function () {
                 howler_example.play();
@@ -34,26 +41,6 @@
 
             $("#howler-stop").on("click", function () {
                 howler_example.stop();
-            });
-
-            $("#howler-volup").on("click", function () {
-
-
-                var vol = howler_example.volume();
-                vol += 0.1;
-                if (vol > 1) {
-                    vol = 1;
-                }
-                howler_example.volume(vol);
-            });
-
-            $("#howler-voldown").on("click", function () {
-                var vol = howler_example.volume();
-                vol -= 0.1;
-                if (vol < 0) {
-                    vol = 0;
-                }
-                howler_example.volume(vol);
             });
 
 
@@ -69,21 +56,30 @@
                 howler_example.play();
             });
 
-            $("#howler-send_time").on("click", function () {
-
-
+            $(".close").on("click", function () {
+                howler_example.stop();
+                howler_example2.stop();
+                arr = new Array();
+                count = 0;
             });
-
 
             $(document).keypress(function (e) {
                 if (e.which == 13) {
                     count = count + 1;
-                    $('p').text('Press enter when sound comes in.');
-                    console.log(howler_example.seek());
-                    if (arr.length >= 2) {
-                        arr.pop();
+                    if (count == 1) {
+                        $('p').text('Second sound will start after 5 seconds,Press enter when sound comes in.');
+                        console.log(howler_example.seek());
+                        arr.push(howler_example.seek());
+                        howler_example.stop();
+                        sleep(5000);
+                        howler_example2.play();
+                    }else {
+                        $('p').text('Press enter when sound comes in.');
+                        console.log(howler_example2.seek());
+                        arr.push(howler_example2.seek());
+                        howler_example2.stop();
                     }
-                    arr.push(howler_example.seek());
+
                     if (count == 2) {
                         console.log(arr);
                         $.ajax({
@@ -96,11 +92,17 @@
                                 data = html.split(',');
                                 alert(data);
 
-                                $('#id_frequency').val(data[0]);
-                                $('#id_age').val(data[1]);
 
+                                $('#id_frequency1').val(data[0]);
+                                $('#id_frequency2').val(data[1]);
+                                $("#id_frequency1").prop("readonly", true);
+                                $("#id_frequency2").prop("readonly", true);
+
+
+                                $('#id_average').val(data[2]);
+                                $('#id_age').val(data[3]);
                                 $("#id_age").prop("readonly", true);
-                                $("#id_frequency").prop("readonly", true);
+                                $("#id_average").prop("readonly", true);
 
 
                                 $('#user_form').append('<input type="hidden" name="validation" value="valid" />');
@@ -124,20 +126,20 @@
 
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
     <div class="modal-dialog" id='modal'>
 
         <!-- Modal content-->
-        <div class="modal-content">
+        <div class="modal-content" >
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" id="close_top">&times;</button>
                 <h4 class="modal-title">Age Verifier</h4>
             </div>
             <div class="modal-body">
                 <p>Please press enter when sound goes off</p>
             </div>
             <div class="modal-footer">
-                <button id='close_button' type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id='close_button' type="button" class="btn btn-default close" data-dismiss="modal">Close</button>
             </div>
         </div>
 

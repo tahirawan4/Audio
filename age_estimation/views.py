@@ -15,7 +15,8 @@ def index(request):
         if signup_form.is_valid():
             if request.POST.get('validation'):
                 user = signup_form.save()
-                save_user_info(user, int(request.POST.get('age')), float(request.POST.get('frequency')),
+                save_user_info(user, int(request.POST.get('age')), float(request.POST.get('frequency1')),
+                               float(request.POST.get('frequency2')), float(request.POST.get('average')),
                                request.POST.get('country'))
                 messages.add_message(request, messages.ERROR, 'User Successfully Created')
                 signup_form = UserSignUpForm()
@@ -40,5 +41,5 @@ def submit_time(request):
     aver_freq = (testfreq1 + testfreq2) / 2
     para = estimate_age(aver_freq)
     estimated_age = para[1]
-    data = str(aver_freq) + "," + str(estimated_age)
+    data = str(testfreq1) + "," + str(testfreq2) + "," + str(aver_freq) + "," + str(estimated_age)
     return HttpResponse(data)
