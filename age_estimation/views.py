@@ -32,12 +32,12 @@ def submit_time(request):
     lowfreq = 20
     highfreq = 20000
     sample_freq = 44100  # sampling rate, Hz, must be integer
-    duration = 40
+    duration = 20
 
-    sound_time = duration / float(2)
+    sound_time = duration
     testfreq1 = lowfreq + (float(test_time1) / sound_time * (highfreq - lowfreq))
-    testfreq2 = highfreq - ((float(test_time2) - sound_time) / sound_time * (highfreq - lowfreq))
-
+    calculate_freq = ((float(test_time2) - sound_time) / sound_time * (highfreq - lowfreq))
+    testfreq2 = highfreq - calculate_freq if calculate_freq > 0 else highfreq + calculate_freq
     aver_freq = (testfreq1 + testfreq2) / 2
     para = estimate_age(aver_freq)
     estimated_age = para[1]
