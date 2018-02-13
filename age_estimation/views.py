@@ -36,8 +36,8 @@ def submit_time(request):
 
     sound_time = duration
     testfreq1 = lowfreq + (float(test_time1) / sound_time * (highfreq - lowfreq))
-    calculate_freq = ((float(test_time2) - sound_time) / sound_time * (highfreq - lowfreq))
-    testfreq2 = highfreq - calculate_freq if calculate_freq > 0 else highfreq + calculate_freq
+    # calculate_freq = ((float(test_time2) - sound_time) / sound_time * (highfreq - lowfreq))
+    testfreq2 = highfreq - (float(test_time2) / sound_time * (highfreq - lowfreq))
     aver_freq = (testfreq1 + testfreq2) / 2
     para = estimate_age(aver_freq)
     estimated_age = para[1]
