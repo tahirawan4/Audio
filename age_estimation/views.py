@@ -32,7 +32,7 @@ def submit_time(request):
     lowfreq = 20
     highfreq = 20000
     sample_freq = 44100  # sampling rate, Hz, must be integer
-    duration = 15
+    duration = 20
 
     sound_time = duration / float(2)
     testfreq1 = lowfreq + (float(test_time1) / sound_time * (highfreq - lowfreq))
