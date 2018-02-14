@@ -37,3 +37,10 @@ class UserSignUpForm(UserCreationForm):
         if User.objects.filter(username__iexact=username).exists():
             raise forms.ValidationError("Username already exist")
         return username
+
+
+class UserLoginForm(AuthenticationForm):
+    username = UsernameField(
+        max_length=254, label='UserName',
+        widget=forms.TextInput(attrs={'autofocus': True}),
+    )

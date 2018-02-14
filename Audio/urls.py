@@ -18,10 +18,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from age_estimation.views import index, submit_time
+from age_estimation.forms import UserLoginForm
+from age_estimation.views import index, submit_time, login, signup
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('submit_time/$', submit_time, name='submit_time'),
+                  path('submit_time/', submit_time, name='submit_time'),
+                  # path('login/', login, name='login'),
+                  path(r'login/', auth_views.login,
+                       {'template_name': 'login.html', 'authentication_form': UserLoginForm},
+                       name='login'),
+                  path(r'logout/', auth_views.logout, name='logout'),
+                  path('signup/', signup, name='signup'),
                   path('', index, name='index'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

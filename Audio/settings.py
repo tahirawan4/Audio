@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'age_estimation',
+    'bootstrap3',
 ]
 
 MIDDLEWARE = [
@@ -116,3 +117,5 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "age_estimation/static/")
 STATIC_URL = '/static/'
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'

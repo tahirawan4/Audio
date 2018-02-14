@@ -1,5 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from age_estimation.forms import UserSignUpForm
@@ -9,6 +10,10 @@ from django.contrib import messages
 
 
 def index(request):
+    return render(request, 'index.html', {})
+
+
+def signup(request):
     signup_form = UserSignUpForm()
     if request.POST:
         signup_form = UserSignUpForm(request.POST)
@@ -19,11 +24,15 @@ def index(request):
                                float(request.POST.get('frequency2')), float(request.POST.get('average')),
                                request.POST.get('country'))
                 messages.add_message(request, messages.ERROR, 'User Successfully Created')
-                signup_form = UserSignUpForm()
+                return redirect(reverse('login'))
             else:
                 messages.add_message(request, messages.ERROR, 'Please verify Your age.')
 
-    return render(request, 'index.html', {'form': signup_form})
+    return render(request, 'signup.html', {'form': signup_form})
+
+
+def login(request):
+    return render(request, 'signin.html', {})
 
 
 @csrf_exempt
