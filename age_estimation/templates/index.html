@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
     <style>
         * {
             box-sizing: border-box
@@ -90,60 +91,66 @@
 
     </style>
 
-    <div class="slideshow-container">
-        {% for image in images %}
-            <div class="mySlides">
-                <div class="numbertext">{{ forloop.counter }} / 3</div>
-                <img src="{{ image.image.url }}" style="width:100%">
-                <div class="text">Caption Text</div>
-            </div>
+    {% if user.is_authenticated %}
+        <div class="slideshow-container">
+            {% for image in images %}
+                <div class="mySlides">
+                    <div class="numbertext">{{ forloop.counter }} / 3</div>
+                    <img src="{{ image.image.url }}" style="width:100%">
+                    <div class="text">Caption Text</div>
+                </div>
 
-        {% endfor %}
+            {% endfor %}
 
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
-    </div>
-    <br>
+        </div>
+        <br>
 
-    <div style="text-align:center">
-        {% for image in images %}
-            <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
-        {% endfor %}
+        <div style="text-align:center">
+            {% for image in images %}
+                <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
+            {% endfor %}
 
-    </div>
-    <script>
-        var slideIndex = 0;
-        showSlides(slideIndex);
+        </div>
+        <script>
+            var slideIndex = 0;
+            showSlides(slideIndex);
 
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-            var i;
-            var slides = document.getElementsByClassName("mySlides");
-            var dots = document.getElementsByClassName("dot");
-            if (n > slides.length) {
-                slideIndex = 1
+            function plusSlides(n) {
+                showSlides(slideIndex += n);
             }
-            if (n < 1) {
-                slideIndex = slides.length
+
+            function currentSlide(n) {
+                showSlides(slideIndex = n);
             }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+
+            function showSlides(n) {
+                var i;
+                var slides = document.getElementsByClassName("mySlides");
+                var dots = document.getElementsByClassName("dot");
+                if (n > slides.length) {
+                    slideIndex = 1
+                }
+                if (n < 1) {
+                    slideIndex = slides.length
+                }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
             }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-        }
-    </script>
+        </script>
+
+    {% else %}
+        <img src="{% static 'image/home.jpg' %}">
+    {% endif %}
+
 
 
 {% endblock %}
