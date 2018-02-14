@@ -4,13 +4,15 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from age_estimation.forms import UserSignUpForm
+from age_estimation.models import Learn
 from age_estimation.utils import estimate_age, save_user_info
 
 from django.contrib import messages
 
 
 def index(request):
-    return render(request, 'index.html', {})
+    images = Learn.objects.all()
+    return render(request, 'index.html', {'images': images})
 
 
 def signup(request):

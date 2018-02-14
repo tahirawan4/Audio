@@ -18,3 +18,12 @@ class UserInfo(models.Model):
 
     def __unicode__(self):
         return str(self.id)
+
+
+class Learn(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images')
+    caption = models.CharField(max_length=100, null=True, blank=True)
+
+    def __unicode__(self):
+        return str(self.id)

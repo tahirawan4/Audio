@@ -116,6 +116,9 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, "age_estimation/static/")
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "images/")
+MEDIA_URL = '/images/'
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
