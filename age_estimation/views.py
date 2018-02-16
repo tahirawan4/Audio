@@ -21,12 +21,15 @@ def signup(request):
         signup_form = UserSignUpForm(request.POST)
         if signup_form.is_valid():
             if request.POST.get('validation'):
-                user = signup_form.save()
-                save_user_info(user, int(request.POST.get('age')), float(request.POST.get('frequency1')),
-                               float(request.POST.get('frequency2')), float(request.POST.get('average')),
-                               request.POST.get('country'))
-                messages.add_message(request, messages.ERROR, 'User Successfully Created')
-                return redirect(reverse('login'))
+                if int(request.POST.get('age')) < 18:
+                    user = signup_form.save()
+                    save_user_info(user, int(request.POST.get('age')), float(request.POST.get('frequency1')),
+                                   float(request.POST.get('frequency2')), float(request.POST.get('average')),
+                                   request.POST.get('country'))
+                    messages.add_message(request, messages.ERROR, 'User Successfully Created')
+                    return redirect(reverse('login'))
+                messages.add_message(request, messages.ERROR,
+                                     'You Are not authorized to signin, Age must be less than 18.')
             else:
                 messages.add_message(request, messages.ERROR, 'Please verify Your age.')
 

@@ -60,14 +60,13 @@
                 if (e.which == 13) {
                     count = count + 1;
                     if (count == 1) {
-                        $('p').text('Second sound will start after 5 seconds,Press enter when sound comes in.');
+                        $('p').text('Second sound will be played after 5s - press "enter key" when you start hearing the sound.');
                         console.log(howler_example.seek());
                         arr.push(howler_example.seek());
                         howler_example.stop();
                         sleep(5000);
                         howler_example2.play();
                     }else {
-                        $('p').text('Press enter when sound comes in.');
                         console.log(howler_example2.seek());
                         arr.push(howler_example2.seek());
                         howler_example2.stop();
@@ -127,7 +126,7 @@
                 <h4 class="modal-title">Age Verifier</h4>
             </div>
             <div class="modal-body">
-                <p>Please press enter when sound goes off</p>
+                <p>Sound will start playing - press "enter key" when you stop hearing the sound.</p>
             </div>
             <div class="modal-footer">
                 <button id='close_button' type="button" class="btn btn-default close" data-dismiss="modal">Close</button>
