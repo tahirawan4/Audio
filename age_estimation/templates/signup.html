@@ -149,22 +149,25 @@
 {% endif %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6">
-            <button type="button" id='model_btn' class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 form-div" style="">
+            <div class="button" style="text-align: center;padding-top: 11px;">
+            <button style="" type="button" id='model_btn' class="btn btn-info btn-lg main-btn" data-toggle="modal" data-target="#myModal">
                 Verify Your
                 Age
             </button>
+            </div>
             <form id='user_form' method="post">
                 {% csrf_token %}
                 {% for hidden in form.hidden_fields %}
                     {{ hidden }}
                 {% endfor %}
                 {# Include the visible fields #}
+                <p class="hint" style=""> Enter your personal details below: </p>
                 {% for field in form.visible_fields %}
                     <div class="fieldWrapper">
                         {{ field.errors }}
-                        {{ field.label_tag }} {{ field }}
+                         {{ field }}
                     </div>
                 {% endfor %}
                 <br/>
@@ -172,7 +175,7 @@
             </form>
 
         </div>
-        <div class="col-lg-3"></div>
+        <div class="col-lg-4"></div>
     </div>
 </div>
 

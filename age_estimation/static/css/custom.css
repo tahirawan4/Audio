@@ -1,0 +1,51 @@
+.form-control
+{
+    background-color: #dde3ec !important;
+    margin-bottom: 15px;
+    color: #8290a3;
+    font-size: 14px;
+    height: 43px;
+}
+.hint
+{
+    color: #999;
+padding: 0;
+margin: 15px 0 7px;
+}
+.main-btn
+{
+    text-align: center !important;
+    color: #32c5d2 !important;
+    background-color: #eceef1 !important;
+    border: none !important;
+    font-size: 28px;
+}
+.form-div
+{
+    background-color: #eceef1;
+    border-radius: 12px;
+    padding: 23px;
+}
+.btn-success
+{
+    text-transform: uppercase !important;
+    color: #fff;
+background-color: #3fc9d5;
+border-color: #2dc0cd;
+}
+.create-account
+{
+    margin: 18px -22px -38px;
+padding: 10px 0 4px;
+text-align: center;
+background-color: #6c7a8d;
+border-radius: 0 0 7px 7px;
+}
+.create-account p a
+{
+    font-weight: 600;
+font-size: 14px;
+color: #c3cedd;
+    display: inline-block;
+margin-top: 5px;
+}

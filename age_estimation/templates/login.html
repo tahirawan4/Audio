@@ -2,15 +2,31 @@
 {% load bootstrap3 %}
 
 {% block content %}
-    <form role="form" method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="login-form">
-            <h2 class="heading">LOGIN</h2>
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button type="submit" class="btn btn-success">Submit <span class="glyphicon glyphicon-log-in"></span></button>
-                <input type="hidden" name="next" value="{{ next }}"/>
-            {% endbuttons %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 form-div">
+                <form role="form" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="login-form">
+                        <h2 class="heading" style="text-align: center;
+color: #3fc9d5;">LOGIN</h2>
+                        {% bootstrap_form form %}
+                        {% buttons %}
+                            <button type="submit" class="btn btn-success">Submit <span
+                                    class="glyphicon glyphicon-log-in"></span></button>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                            <div class="create-account">
+                                <p>
+                                    <a href="javascript:;" id="register-btn" class="uppercase">Create an account</a>
+                                </p>
+                            </div>
+                        {% endbuttons %}
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4"></div>
         </div>
-    </form>
+    </div>
+
 {% endblock %}

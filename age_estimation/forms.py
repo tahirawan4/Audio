@@ -14,18 +14,21 @@ class UserSignUpForm(UserCreationForm):
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2', 'gender', 'age', 'country',
                   'frequency1', 'frequency2', 'average']
 
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Last name'}))
+    password1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Password1'}))
+    password2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Password2'}))
 
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
-    age = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    country = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    frequency1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    frequency2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    average = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    age = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Age'}))
+    country = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Country'}))
+    # frequency1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # frequency2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # average = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    frequency1 = forms.CharField(widget=forms.HiddenInput())
+    frequency2 = forms.CharField(widget=forms.HiddenInput())
+    average = forms.CharField(widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
         super(UserSignUpForm, self).__init__(*args, **kwargs)
