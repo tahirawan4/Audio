@@ -1,32 +1,170 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load bootstrap3 %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4 form-div">
-                <form role="form" method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <div class="login-form">
-                        <h2 class="heading" style="text-align: center;
-color: #3fc9d5;">LOGIN</h2>
-                        {% bootstrap_form form %}
-                        {% buttons %}
-                            <button type="submit" class="btn btn-success">Submit <span
-                                    class="glyphicon glyphicon-log-in"></span></button>
-                            <input type="hidden" name="next" value="{{ next }}"/>
-                            <div class="create-account">
-                                <p>
-                                    <a href="javascript:;" id="register-btn" class="uppercase">Create an account</a>
-                                </p>
-                            </div>
-                        {% endbuttons %}
-                    </div>
-                </form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+            <script>
+
+        function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
+        $(function () {
+
+            var arr = new Array();
+            var count = 0;
+
+            var howler_example = new Howl({
+                src: ["{% static "audio/first_sound.mp3" %}"],
+            });
+
+            var howler_example2 = new Howl({
+                src: ["{% static "audio/second_sound.mp3" %}"],
+            });
+
+
+            $("#howler-play").on("click", function () {
+                howler_example.play();
+            });
+
+            $("#howler-pause").on("click", function () {
+                howler_example.pause();
+            });
+
+            $("#howler-stop").on("click", function () {
+                howler_example.stop();
+            });
+
+
+            $("#howler-log_time").on("click", function () {
+
+                console.log(howler_example.seek());
+                arr.push(howler_example.seek());
+
+            });
+
+            $("#model_btn").on("click", function () {
+                $("#model_btn").blur();
+                arr = new Array();
+                count = 0;
+                howler_example.play();
+            });
+
+            $(".close").on("click", function () {
+                howler_example.stop();
+                howler_example2.stop();
+                arr = new Array();
+                count = 0;
+            });
+
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    count = count + 1;
+                    if (count == 1) {
+                        $('p').text('Second sound will be played after 5s - press "enter key" when you start hearing the sound.');
+                        console.log(howler_example.seek());
+                        arr.push(howler_example.seek());
+                        howler_example.stop();
+                        sleep(5000);
+                        howler_example2.play();
+                    }else {
+                        console.log(howler_example2.seek());
+                        arr.push(howler_example2.seek());
+                        howler_example2.stop();
+                    }
+
+                    if (count == 2) {
+                        console.log(arr);
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'submit_time' %}",
+                            data: {
+                                'data': arr
+                            },
+                            success: function (html) {
+                                data = html.split(',');
+                                alert(data);
+
+                            if (data[3] > 18) {
+                                alert("You can't signin, as your estimated age is " + data[3]);
+                            } else {
+                                $('#login_form').submit();
+                            }
+
+                            $('#close_button').click();
+
+                            arr = new Array();
+                            count = 0;
+
+
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+        });
+
+
+    </script>
+
+
+<div id="myModal" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" id='modal'>
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" id="close_top">&times;</button>
+                <h4 class="modal-title">Age Verifier</h4>
             </div>
-            <div class="col-lg-4"></div>
+            <div class="modal-body">
+                <p>Sound will start playing - press "enter key" when you stop hearing the sound.</p>
+            </div>
+            <div class="modal-footer">
+                <button id='close_button' type="button" class="btn btn-default close" data-dismiss="modal">Close
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 form-div">
+            <form role="form" method="post" id='login_form' action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="login-form">
+                    <h2 class="heading" style="text-align: center;
+color: #3fc9d5;">LOGIN</h2>
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <button style="" type="button" id='model_btn' class="btn btn-info btn-lg main-btn"
+                                data-toggle="modal"
+                                data-target="#myModal">
+                            Submit
+                        </button>
+
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                        <div class="create-account">
+                            <p>
+                                <a href="javascript:;" id="register-btn" class="uppercase">Create an account</a>
+                            </p>
+                        </div>
+                    {% endbuttons%}
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-{% endblock %}
+{% endblock content %}
