@@ -51,5 +51,5 @@ def submit_time(request):
     aver_freq = (testfreq1 + testfreq2) / 2
     para = estimate_age(aver_freq)
     estimated_age = para[1]
-    data = str(testfreq1) + "," + str(testfreq2) + "," + str(aver_freq) + "," + str(estimated_age)
+    data =  str(estimated_age)
     return HttpResponse(data)
